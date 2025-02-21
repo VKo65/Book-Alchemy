@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  </head>
+  <body>
+
+    <form method="get" action="/">
+            <label for="sort_by">Sort by:</label>
+            <select name="sort_by" id="sort_by">
+                <option value="title">Title</option>
+                <option value="author">Author</option>
+            </select>
+            <label for="direction">Direction:</label>
+            <select name="direction" id="direction">
+                <option value="asc">Ascending</option>
+                <option value="desc">Descending</option>
+            </select>
+            <button type="submit">Sort</button>
+    </form>
+
+    <form method="GET" action="/">
+        <input type="text" name="search" placeholder="Search books..." value="{{ search_query }}">
+        <button type="submit">Search</button>
+    </form>
+
+    <form method="POST" action="/">
+        <input type="number" name="delete_book_id" placeholder="Enter Book ID to delete">
+        <button type="submit">Delete</button>
+    </form>
+
+
+
+    <ul>
+        {% for book in books %}
+            <li>
+                <strong>{{ book.title }}</strong> by {{ book.author.name }}
+
+            </li>
+        {% endfor %}
+    </ul>
+
+  </body>
+</html>
