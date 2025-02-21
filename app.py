@@ -14,6 +14,17 @@ db.init_app(app)
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
+    """
+        Home page that displays all books in the library.
+
+        - GET: Retrieves all books from the database
+        - POST: Handles book deletion requests (if a book is deleted, it also removes the author if no books remain).
+        - Sorting: Supports sorting books by title or author in ascending or descending order.
+        - Searching: Allows filtering
+
+        Returns:
+            Rendered template of home.html with books data.
+        """
     search_query = request.args.get('search', '').strip()
     sort_by = request.args.get('sort_by', 'title')
     direction = request.args.get('direction', 'asc')
@@ -72,6 +83,17 @@ def home():
 
 @app.route('/add_author', methods=['GET', 'POST'])
 def add_author():
+    """
+        Adding a new author to the library.
+
+        - GET: Displays the add_author.html form.
+        - POST: Processes form data, validates input, and adds a new author to the database.
+          - If required fields are missing, flashes an error message.
+          - If successful, flashes a confirmation message and redirects back.
+
+        Returns:
+            Rendered template of add_author.html with a success/error message.
+        """
     if request.method == 'POST':
         name = request.form.get('name')
         birth_date = request.form.get('birthdate')
@@ -94,6 +116,17 @@ def add_author():
 
 @app.route('/add_book', methods=['GET', 'POST'])
 def add_book():
+    """
+        Adding a new book to the library.
+
+        - GET: Displays the add_book.html form with a dropdown to select an existing author.
+        - POST: Processes form data, validates input, and adds a new book to the database.
+          - If required fields are missing, flashes an error message.
+          - If successful, flashes a confirmation message and redirects back.
+
+        Returns:
+            Rendered template of add_book.html with a success/error message.
+        """
     authors = Author.query.all()
 
     if request.method == 'POST':
@@ -139,6 +172,17 @@ def library_home():
 
 @app.route('/book/<int:book_id>/delete', methods=['POST'])
 def delete_book(book_id):
+    """
+        Deletes a book from the library.
+
+        - Finds the book by its ID.
+        - If found, deletes the book and removes the author if they have no remaining books.
+        - If the book does not exist, flashes an error message.
+        - Redirects back to the home page after deletion.
+
+        Returns:
+            Redirect to home.html with a success/error message.
+        """
     book = Book.query.get(book_id)
 
     if book:
